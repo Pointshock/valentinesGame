@@ -5,11 +5,14 @@ import { audioEngine } from '../engine/audio';
 interface DiceRollProps {
   onResult: (roll: number) => void;
   prompt?: string;
+  /** When true, start rolling immediately on mount (e.g. after "Try Again") */
+  autoRoll?: boolean;
 }
 
 export default function DiceRoll({
   onResult,
   prompt = 'Roll the d20',
+  autoRoll = false,
 }: DiceRollProps) {
   const [phase, setPhase] = useState<'idle' | 'rolling' | 'done'>('idle');
   const [displayNum, setDisplayNum] = useState(20);
@@ -17,6 +20,7 @@ export default function DiceRoll({
   const intervalRef = useRef<number | null>(null);
   const onResultRef = useRef(onResult);
   onResultRef.current = onResult;
+  const hasAutoRolledRef = useRef(false);
 
   // Cleanup interval on unmount
   useEffect(() => {
@@ -25,8 +29,7 @@ export default function DiceRoll({
     };
   }, []);
 
-  const handleRoll = useCallback(() => {
-    if (phase !== 'idle') return;
+  const startRoll = useCallback(() => {
     setPhase('rolling');
     audioEngine.playSfx('diceRoll');
 
@@ -47,7 +50,19 @@ export default function DiceRoll({
       // Short pause to admire the number, then notify parent
       setTimeout(() => onResultRef.current(result), 700);
     }, 1500);
-  }, [phase]);
+  }, []);
+
+  // Auto-roll once when mounted with autoRoll (e.g. after "Try Again")
+  useEffect(() => {
+    if (!autoRoll || hasAutoRolledRef.current) return;
+    hasAutoRolledRef.current = true;
+    startRoll();
+  }, [autoRoll, startRoll]);
+
+  const handleRoll = useCallback(() => {
+    if (phase !== 'idle') return;
+    startRoll();
+  }, [phase, startRoll]);
 
   const getRollColor = (roll: number) => {
     if (roll >= 15) return 'text-green-400';
@@ -63,22 +78,22 @@ export default function DiceRoll({
           className="btn-fantasy bg-royal-light hover:bg-royal text-gold border-2 border-gold/50 hover:border-gold px-8 py-4 text-lg flex items-center gap-3"
           aria-label={prompt}
         >
-          <img src="/assets/dice_idle.png" alt="" className="w-10 h-10 object-contain" style={{ imageRendering: 'pixelated' }} />
+          <img src="/assets/dice_idle.png" alt="" className="w-14 h-14 object-contain" style={{ imageRendering: 'pixelated' }} />
           {prompt}
         </button>
       )}
 
       {(phase === 'rolling' || phase === 'done') && (
         <div className="flex flex-col items-center gap-3 animate-fade-in">
-          <div className="relative w-28 h-28 flex items-center justify-center">
+          <div className="relative w-40 h-40 flex items-center justify-center">
             <img
               src={phase === 'rolling' ? '/assets/dice_roll.png' : '/assets/dice_idle.png'}
               alt="D20"
-              className={`w-28 h-28 object-contain ${phase === 'rolling' ? 'dice-rolling' : ''}`}
+              className={`w-40 h-40 object-contain ${phase === 'rolling' ? 'dice-rolling' : ''}`}
               style={{ imageRendering: 'pixelated' }}
             />
             <span
-              className={`absolute inset-0 flex items-center justify-center text-2xl font-heading font-bold transition-colors duration-300 ${
+              className={`absolute inset-0 flex items-center justify-center text-3xl font-heading font-bold transition-colors duration-300 ${
                 phase === 'rolling'
                   ? 'text-gold/70'
                   : getRollColor(finalRoll)

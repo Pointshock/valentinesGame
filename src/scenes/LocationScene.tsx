@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, type ReactNode } from 'react';
 import GameCard from '../components/GameCard';
 import Portraits from '../components/Portraits';
 import Narration from '../components/Narration';
@@ -26,6 +26,7 @@ export default function LocationScene() {
   const [rollKey, setRollKey] = useState(0); // key to remount DiceRoll for retries
   const [failText, setFailText] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [autoRollNext, setAutoRollNext] = useState(false); // after "Try Again", roll immediately
 
   const vars = {
     protagonistName: state.protagonistName,
@@ -33,10 +34,27 @@ export default function LocationScene() {
     roll: String(roll),
   };
 
+  // Full-page background using the location's scene image
+  const locationBackground = content
+    ? { backgroundImage: `url(/assets/scene_${locationId}.png)` }
+    : undefined;
+
+  const sceneWrapper = (node: ReactNode) =>
+    locationBackground ? (
+      <div
+        className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center p-4"
+        style={locationBackground}
+      >
+        {node}
+      </div>
+    ) : (
+      node
+    );
+
   // Safety: if already visited or content missing, redirect
   // Only redirect when first entering (phase is still 'intro') — not mid-completion
   if (!content || (state.visited[locationId] && phase === 'intro')) {
-    return (
+    return sceneWrapper(
       <GameCard title="Already Visited">
         <p className="font-body text-ink text-center mb-6">
           You've already claimed this shard. The path leads back to the tavern.
@@ -49,11 +67,12 @@ export default function LocationScene() {
             🏠 Return to Tavern
           </button>
         </div>
-      </GameCard>
+      </GameCard>,
     );
   }
 
   const handleRollResult = (result: number) => {
+    setAutoRollNext(false); // reset so next time we only auto-roll if they click Try Again
     setRoll(result);
 
     if (result < SUCCESS_THRESHOLD) {
@@ -73,6 +92,7 @@ export default function LocationScene() {
 
   const handleRetry = useCallback(() => {
     audioEngine.playSfx('click');
+    setAutoRollNext(true); // next DiceRoll mount will auto-roll
     setPhase('intro');
     setRoll(0);
     setRollKey((k) => k + 1); // force DiceRoll to remount fresh
@@ -80,7 +100,7 @@ export default function LocationScene() {
 
   const tier = getRollTier(roll);
 
-  return (
+  return sceneWrapper(
     <GameCard title={content.title}>
       <Portraits
         protagonistName={state.protagonistName}
@@ -90,7 +110,7 @@ export default function LocationScene() {
       <Narration text={interpolate(content.narrative, vars)} />
 
       {phase === 'intro' && (
-        <DiceRoll key={rollKey} prompt={content.rollPrompt} onResult={handleRollResult} />
+        <DiceRoll key={rollKey} prompt={content.rollPrompt} onResult={handleRollResult} autoRoll={autoRollNext} />
       )}
 
       {phase === 'failed' && (
@@ -140,6 +160,6 @@ export default function LocationScene() {
       )}
 
       <InventoryBar inventory={state.inventory} />
-    </GameCard>
+    </GameCard>,
   );
 }
