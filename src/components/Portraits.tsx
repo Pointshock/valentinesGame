@@ -1,3 +1,5 @@
+import { asset } from '../engine/utils';
+
 interface PortraitsProps {
   protagonistName: string;
   bardName: string;
@@ -17,7 +19,7 @@ export default function Portraits({
         <div className="flex flex-col items-center">
           <div className="w-28 h-28 rounded-lg overflow-hidden border-2 border-gold shadow-lg bg-royal-light/30">
             <img
-              src="/assets/portrait_protagonist.png"
+              src={asset('assets/portrait_protagonist.png')}
               alt={protagonistName}
               className="w-full h-full object-contain"
               style={{ imageRendering: 'pixelated' }}
@@ -32,7 +34,7 @@ export default function Portraits({
       {showProtagonist && showBard && (
         <div className="mb-5" aria-hidden="true">
           <img
-            src="/assets/heart.png"
+            src={asset('assets/heart.png')}
             alt=""
             className="w-12 h-12 object-contain"
             style={{ imageRendering: 'pixelated' }}
@@ -44,7 +46,7 @@ export default function Portraits({
         <div className="flex flex-col items-center">
           <div className="w-28 h-28 rounded-lg overflow-hidden border-2 border-gold shadow-lg bg-royal-light/30">
             <img
-              src="/assets/portrait_bard.png"
+              src={asset('assets/portrait_bard.png')}
               alt={bardName}
               className="w-full h-full object-contain"
               style={{ imageRendering: 'pixelated' }}

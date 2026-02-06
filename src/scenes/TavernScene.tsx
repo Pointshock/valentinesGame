@@ -5,7 +5,7 @@ import InventoryBar from '../components/InventoryBar';
 import { useGame } from '../engine/gameState';
 import { audioEngine } from '../engine/audio';
 import { tavernScene, tavernReturn, bardQuips } from '../content/story';
-import { interpolate, countShards } from '../engine/utils';
+import { interpolate, countShards, asset } from '../engine/utils';
 
 export default function TavernScene() {
   const { state, goToScene } = useGame();
@@ -31,7 +31,7 @@ export default function TavernScene() {
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center p-4"
-      style={{ backgroundImage: 'url(/assets/tavern.png)' }}
+      style={{ backgroundImage: `url(${asset('assets/tavern.png')})` }}
     >
       <GameCard title={tavernScene.title}>
       <Portraits
@@ -58,7 +58,7 @@ export default function TavernScene() {
               className="btn-fantasy bg-forest hover:bg-green-800 text-white flex items-center gap-3"
               aria-label="Travel to the Whispering Forest"
             >
-              <img src="/assets/scene_forest.png" alt="" className="w-24 h-20 rounded object-contain" style={{ imageRendering: 'pixelated' }} />
+              <img src={asset('assets/scene_forest.png')} alt="" className="w-24 h-20 rounded object-contain" style={{ imageRendering: 'pixelated' }} />
               <span>The Whispering Forest</span>
             </button>
           )}
@@ -68,7 +68,7 @@ export default function TavernScene() {
               className="btn-fantasy bg-royal-light hover:bg-royal text-white flex items-center gap-3"
               aria-label="Travel to the Moonlit Market"
             >
-              <img src="/assets/scene_market.png" alt="" className="w-24 h-20 rounded object-contain" style={{ imageRendering: 'pixelated' }} />
+              <img src={asset('assets/scene_market.png')} alt="" className="w-24 h-20 rounded object-contain" style={{ imageRendering: 'pixelated' }} />
               <span>The Moonlit Market</span>
             </button>
           )}
@@ -78,7 +78,7 @@ export default function TavernScene() {
               className="btn-fantasy bg-ruby-dark hover:bg-ruby text-white flex items-center gap-3"
               aria-label="Travel to the Crumbled Ruins"
             >
-              <img src="/assets/scene_ruins.png" alt="" className="w-24 h-20 rounded object-contain" style={{ imageRendering: 'pixelated' }} />
+              <img src={asset('assets/scene_ruins.png')} alt="" className="w-24 h-20 rounded object-contain" style={{ imageRendering: 'pixelated' }} />
               <span>The Crumbled Ruins</span>
             </button>
           )}

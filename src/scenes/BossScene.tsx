@@ -5,7 +5,7 @@ import Narration from '../components/Narration';
 import { useGame } from '../engine/gameState';
 import { audioEngine } from '../engine/audio';
 import { bossScene } from '../content/story';
-import { interpolate } from '../engine/utils';
+import { interpolate, asset } from '../engine/utils';
 
 export default function BossScene() {
   const { state, dispatch, goToScene } = useGame();
@@ -35,7 +35,7 @@ export default function BossScene() {
     <GameCard title={bossScene.title}>
       <div className="flex justify-center mb-4">
         <img
-          src="/assets/imp.png"
+          src={asset('assets/imp.png')}
           alt="Mischief Imp of Envy"
           className="w-40 h-40 object-contain drop-shadow-[0_0_8px_rgba(74,222,128,0.4)]"
           style={{ imageRendering: 'pixelated' }}
@@ -89,7 +89,7 @@ export default function BossScene() {
               className="btn-fantasy bg-ruby hover:bg-ruby-dark text-white text-lg"
               aria-label="Return to the festival"
             >
-              <img src="/assets/heartstone.png" alt="" className="w-8 h-8 inline-block mr-1 -mt-0.5 object-contain" style={{ imageRendering: 'pixelated' }} /> Return to the Festival
+              <img src={asset('assets/heartstone.png')} alt="" className="w-8 h-8 inline-block mr-1 -mt-0.5 object-contain" style={{ imageRendering: 'pixelated' }} /> Return to the Festival
             </button>
           </div>
         </div>

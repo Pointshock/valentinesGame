@@ -7,7 +7,7 @@ import InventoryBar from '../components/InventoryBar';
 import { useGame } from '../engine/gameState';
 import { audioEngine } from '../engine/audio';
 import { locationScenes } from '../content/story';
-import { interpolate, getRollTier } from '../engine/utils';
+import { interpolate, getRollTier, asset } from '../engine/utils';
 import type { LocationId } from '../engine/types';
 
 const SUCCESS_THRESHOLD = 10; // 10-20 = success, 1-9 = fail
@@ -36,7 +36,7 @@ export default function LocationScene() {
 
   // Full-page background using the location's scene image
   const locationBackground = content
-    ? { backgroundImage: `url(/assets/scene_${locationId}.png)` }
+    ? { backgroundImage: `url(${asset(`assets/scene_${locationId}.png`)})` }
     : undefined;
 
   const sceneWrapper = (node: ReactNode) =>

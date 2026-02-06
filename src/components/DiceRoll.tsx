@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { rollD20 } from '../engine/utils';
+import { rollD20, asset } from '../engine/utils';
 import { audioEngine } from '../engine/audio';
 
 interface DiceRollProps {
@@ -78,7 +78,7 @@ export default function DiceRoll({
           className="btn-fantasy bg-royal-light hover:bg-royal text-gold border-2 border-gold/50 hover:border-gold px-8 py-4 text-lg flex items-center gap-3"
           aria-label={prompt}
         >
-          <img src="/assets/dice_idle.png" alt="" className="w-14 h-14 object-contain" style={{ imageRendering: 'pixelated' }} />
+          <img src={asset('assets/dice_idle.png')} alt="" className="w-14 h-14 object-contain" style={{ imageRendering: 'pixelated' }} />
           {prompt}
         </button>
       )}
@@ -87,7 +87,7 @@ export default function DiceRoll({
         <div className="flex flex-col items-center gap-3 animate-fade-in">
           <div className="relative w-40 h-40 flex items-center justify-center">
             <img
-              src={phase === 'rolling' ? '/assets/dice_roll.png' : '/assets/dice_idle.png'}
+              src={phase === 'rolling' ? asset('assets/dice_roll.png') : asset('assets/dice_idle.png')}
               alt="D20"
               className={`w-40 h-40 object-contain ${phase === 'rolling' ? 'dice-rolling' : ''}`}
               style={{ imageRendering: 'pixelated' }}

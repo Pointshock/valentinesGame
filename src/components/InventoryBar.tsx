@@ -1,4 +1,5 @@
 import type { Inventory } from '../engine/types';
+import { asset } from '../engine/utils';
 
 interface InventoryBarProps {
   inventory: Inventory;
@@ -8,19 +9,19 @@ const shards = [
   {
     key: 'petal' as const,
     name: 'Petal Shard',
-    image: '/assets/shard_petal.png',
+    image: asset('assets/shard_petal.png'),
     color: 'bg-shard-petal',
   },
   {
     key: 'ribbon' as const,
     name: 'Ribbon Shard',
-    image: '/assets/shard_ribbon.png',
+    image: asset('assets/shard_ribbon.png'),
     color: 'bg-shard-ribbon',
   },
   {
     key: 'candle' as const,
     name: 'Candle Shard',
-    image: '/assets/shard_candle.png',
+    image: asset('assets/shard_candle.png'),
     color: 'bg-shard-candle',
   },
 ];

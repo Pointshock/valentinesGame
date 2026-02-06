@@ -4,7 +4,7 @@ import Confetti from '../components/Confetti';
 import { useGame } from '../engine/gameState';
 import { audioEngine } from '../engine/audio';
 import { endScene } from '../content/story';
-import { interpolate } from '../engine/utils';
+import { interpolate, asset } from '../engine/utils';
 
 export default function EndScreen() {
   const { state, goToScene, dispatch } = useGame();
@@ -46,7 +46,7 @@ export default function EndScreen() {
         <div className="text-center">
           <div className="mb-4 animate-float">
             <img
-              src="/assets/heart.png"
+              src={asset('assets/heart.png')}
               alt=""
               className="w-24 h-24 mx-auto object-contain"
               style={{ imageRendering: 'pixelated' }}
@@ -82,7 +82,7 @@ export default function EndScreen() {
               className="btn-fantasy bg-gold/80 hover:bg-gold text-ink"
               aria-label="View your keepsake scroll"
             >
-              <img src="/assets/scroll.png" alt="" className="w-7 h-7 inline-block mr-1 -mt-0.5 object-contain" style={{ imageRendering: 'pixelated' }} /> View Keepsake
+              <img src={asset('assets/scroll.png')} alt="" className="w-7 h-7 inline-block mr-1 -mt-0.5 object-contain" style={{ imageRendering: 'pixelated' }} /> View Keepsake
             </button>
           </div>
         </div>

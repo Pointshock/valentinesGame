@@ -1,6 +1,7 @@
 import GameCard from '../components/GameCard';
 import { useGame } from '../engine/gameState';
 import { audioEngine } from '../engine/audio';
+import { asset } from '../engine/utils';
 
 export default function TitleScreen() {
   const { goToScene, dispatch, state } = useGame();
@@ -10,7 +11,7 @@ export default function TitleScreen() {
       <div className="text-center py-4">
         <div className="mb-6 animate-float">
           <img
-            src="/assets/heartstone.png"
+            src={asset('assets/heartstone.png')}
             alt="Heartstone"
             className="w-32 h-32 mx-auto object-contain drop-shadow-[0_0_12px_rgba(220,38,38,0.5)]"
             style={{ imageRendering: 'pixelated' }}
